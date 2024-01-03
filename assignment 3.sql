@@ -35,18 +35,18 @@ SELECT
     rental_duration,
     AVG(rental_duration) OVER (PARTITION BY length_category order by film_id) AS avg_rental_duration_for_length_category
 FROM (
-    SELECT 
+       SELECT 
         film_id,
         title,
         length,
         rental_duration,
-        CASE 
-            WHEN length <= 50 THEN '0-50 mins'
-            WHEN length > 60 AND length <= 120 THEN '61-120 mins'
-            ELSE 'Over 120 mins'
-        END AS length_category
-    FROM film 
-    ) AS subquery;
+CASE WHEN length <= 50 THEN '0-50 mins'
+WHEN length > 60 AND length <= 120 THEN '61-120 mins'
+ELSE 'Over 120 mins'
+END AS length_category
+FROM film ) AS subquery;
+
+
 -- Q4. Identify the top 3 films in each category based on their rental counts.
 SELECT 
     sub.category_id, 
@@ -154,6 +154,7 @@ WITH MonthlyRevenue AS (
     FROM rental r 
     JOIN payment p ON r.rental_id = p.rental_id 
     GROUP BY 1, 2
+
 ),
 RankedRevenue AS (
     SELECT year,month,revenue,
